@@ -1,4 +1,4 @@
-import mysql.connector, requests, sys, os, sched, time, asyncio
+import sched, time, asyncio
 from mysql.connector import Error
 from bs4 import BeautifulSoup
 

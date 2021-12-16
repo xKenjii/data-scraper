@@ -21,5 +21,21 @@ except Error as e:
 
 
 def defaultQuery(query, parameters):
-    cursor.execute(query, parameters)
-    connection.commit()
+
+    try:
+
+        if 'INSERT' in query:       # If it's an insert query
+            
+            cursor.execute(query, parameters)
+            connection.commit()
+            return True
+
+        else:                       # Most probably a select query
+            
+            cursor.execute(query, parameters)
+            return cursor.fetchall()
+
+    except Exception as e:
+        # Extend on error handeling
+        print(f"MySQL ERROR {e}")
+        return False
