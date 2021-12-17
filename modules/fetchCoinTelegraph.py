@@ -1,5 +1,4 @@
-import sys, requests
-from bs4 import BeautifulSoup
+import sys
 
 sys.path.append("..")
 from handlers.mysqlHandler import defaultQuery
@@ -12,31 +11,10 @@ async def _fetchCoinTelegraph():
 
         try:
             
-            requestXml(url, 'item', 'title', 'link', 'description')
-            # requestXml(url)
-            # r = requests.get(url, headers = {'User-agent': 'Crypto Watcher Discord Bot'})
-
-            # if r.status_code == requests.codes.ok:
-
-            #     r.json()
-
-            #     soup = BeautifulSoup(r.content, features='xml')
-    
-            #     articles = soup.findAll('item')
-
-            #     for a in articles:
-            #         title       = a.find('title').text
-            #         link        = a.find('link').text
-            #         description = a.find('description').text
-
-            #         article = {
-            #             'title': title,
-            #             'link': link,
-            #             'description': description
-            #         }
-
-            # else:
-            #     print("Oopsie")
+            data = requestXml(url, 'item', 'title', 'link', 'description')
+            
+            for article in data:
+                defaultQuery('INSERT INTO cryptoarticles (source, title, content) VALUES (%s, %s, %s)', [article['link'], article['title'], article['description']])
 
         except Exception as e:
             print(f"CoinTelegraph\'s scraping job failed. See Exception: {e}")

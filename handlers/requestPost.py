@@ -1,17 +1,20 @@
-import requests, sys
+import requests, sys, re
 from bs4 import BeautifulSoup
 
 sys.path.append("..")
 from handlers.mysqlHandler import defaultQuery
 
+recompile = re.compile('<.*?>')
+
     # url       -> URL to send request to
     # objectTag -> Object name which will be used in findAll
 
+def requestXml( _url, _objectTag, _title, _link, _description, _hasToBeUnique = True):
 
-def requestXml(_url, _objectTag, _title, _link, _description):
+    dataList = []
 
     try:
-#         print(_url)
+
         r = requests.get(_url, headers = {'User-agent': 'Crypto Watcher Discord Bot | Contact Kenjii#2641 for Inquiries'})
 
         if r.status_code == requests.codes.ok:
@@ -21,9 +24,9 @@ def requestXml(_url, _objectTag, _title, _link, _description):
             articles = soup.findAll(_objectTag)
 
             for a in articles:
-                title       = a.find(_title).text 
-                link        = a.find(_link).text 
-                description = a.find(_description).text
+                title       = re.sub(recompile, '', a.find(_title).text).strip()
+                link        = re.sub(recompile, '', a.find(_link).text).strip()
+                description = re.sub(recompile, '', a.find(_description).text).strip()
 
                 article = {
                     'title': title,
@@ -31,14 +34,18 @@ def requestXml(_url, _objectTag, _title, _link, _description):
                     'description': description
                 }
 
-                sqlResponse = defaultQuery("SELECT id FROM articles WHERE source = %s", (article['link'], ))
-            
-                if not sqlResponse:
+                if _hasToBeUnique is True:
 
-                    print(article['title'])
-                    print(article['link'])
-                    print(article['description'])
-                    print('---------')
+                    sqlResponse = defaultQuery("SELECT id FROM cryptoarticles WHERE source = %s", (article['link'], ))
+
+                    if not sqlResponse:
+                        dataList.append(article)
+
+                else:
+                    dataList.append(article)
+
+            return dataList
+
         else:
             # Extend on error handling
             print("oopsie")
