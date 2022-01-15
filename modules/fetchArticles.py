@@ -16,7 +16,12 @@ async def _fetchArticles():
 
             for article in xmlData:
 
-                defaultQuery('INSERT INTO cryptoarticles (source, designation, title, content) VALUES (%s, %s, %s, %s)', [article['link'], data[6], article['title'], article['description']])
+                if data[7] == 0:
+                    description = article['description']
+                else:
+                    description = ""
+
+                defaultQuery('INSERT INTO cryptoarticles (source, designation, title, content) VALUES (%s, %s, %s, %s)', [article['link'], data[6], article['title'], description])
 
     except Exception as e:
         print(f"Fetching articles has failed, see exception: {e}")
