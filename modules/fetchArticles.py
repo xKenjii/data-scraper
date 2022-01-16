@@ -1,4 +1,5 @@
 import sys
+from html.parser import HTMLParser
 
 sys.path.append("..")
 from handlers.mysqlHandler import defaultQuery
@@ -17,11 +18,11 @@ async def _fetchArticles():
             for article in xmlData:
 
                 if data[7] == 0:
-                    description = article['description']
+                    description = HTMLParser().unescape(article['description'])
                 else:
                     description = ""
 
-                defaultQuery('INSERT INTO cryptoarticles (source, designation, title, content) VALUES (%s, %s, %s, %s)', [article['link'], data[6], article['title'], description])
+                defaultQuery('INSERT INTO cryptoarticles (source, designation, title, content) VALUES (%s, %s, %s, %s)', [article['link'], data[6], HTMLParser().unescape(article['title']), description])
 
     except Exception as e:
         print(f"(fetchArticles.py) Fetching articles has failed, see exception: {e}")
