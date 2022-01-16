@@ -22,4 +22,4 @@ async def _fetchPriceData():
             defaultQuery("UPDATE pricedata SET price = %s WHERE ticker = %s", [price, ticker[0]])
 
         else:
-            print(f'Fetching price data failed, error code: {sc}')
+            print(f'(fetchPriceData.py) Fetching price data failed, error code: {sc}')

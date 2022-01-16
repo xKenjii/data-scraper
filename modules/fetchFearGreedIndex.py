@@ -22,4 +22,4 @@ async def _fetchFearGreedIndex():
                 defaultQuery("INSERT INTO feargreedindex (value, classification) VALUES (%s, %s)", [data['data'][0]['value'], data['data'][0]['value_classification']])
 
     else:
-        print(f'Fetching Bitcoin\'s fear and greed index has failed: {sc}')
+        print(f'(fetchFearGreedIndex.py) Fetching Bitcoin\'s fear and greed index has failed: {sc}')

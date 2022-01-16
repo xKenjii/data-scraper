@@ -52,4 +52,4 @@ def requestXml( _url, _objectTag, _title, _link, _description, _hasToBeUnique = 
 
     except Exception as e:
         # Extend on error handling
-        print(f"request failed: {e}")
+        print(f"(requestPost.py) request failed: {e}")

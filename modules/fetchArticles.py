@@ -24,4 +24,4 @@ async def _fetchArticles():
                 defaultQuery('INSERT INTO cryptoarticles (source, designation, title, content) VALUES (%s, %s, %s, %s)', [article['link'], data[6], article['title'], description])
 
     except Exception as e:
-        print(f"Fetching articles has failed, see exception: {e}")
+        print(f"(fetchArticles.py) Fetching articles has failed, see exception: {e}")
