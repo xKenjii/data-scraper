@@ -24,18 +24,19 @@ def defaultQuery(query, parameters):
 
     try:
 
+        cursor.execute(query, parameters)
+
         if 'INSERT' in query:       # If it's an insert query
-            cursor.execute(query, parameters)
             connection.commit()
             return True
 
         elif 'UPDATE' in query:
-            cursor.execute(query, parameters)
             return True
 
-        else:                       # Most probably a select query
-            cursor.execute(query, parameters)
+        elif 'SELECT' in query:
             return cursor.fetchall()
+
+        return
 
     except Exception as e:
         # Extend on error handeling
