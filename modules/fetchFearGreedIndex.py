@@ -16,11 +16,11 @@ async def _fetchFearGreedIndex():
 
             if data['data'][0]['value'] != None:
 
-                existingData = defaultQuery("SELECT * FROM feargreedindex ORDER BY id DESC LIMIT 1", ())
+                existingData = defaultQuery("SELECT timestamp FROM feargreedindex ORDER BY id DESC LIMIT 1", ())
 
-                if int(existingData[0][1]) != int(data['data'][0]['value']):
+                if int(existingData[0][0]) != int(data['data'][0]['timestamp']):
 
-                    defaultQuery("INSERT INTO feargreedindex (value, classification) VALUES (%s, %s)", [data['data'][0]['value'], data['data'][0]['value_classification']])
+                    defaultQuery("INSERT INTO feargreedindex (value, classification, timestamp) VALUES (%s, %s, %s)", [data['data'][0]['value'], data['data'][0]['value_classification'], data['data'][0]['timestamp']])
 
         else:
             print(f'(fetchFearGreedIndex.py) Fetching Bitcoin\'s fear and greed index has failed: {sc}')

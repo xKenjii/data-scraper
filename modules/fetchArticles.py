@@ -3,6 +3,7 @@ import sys
 sys.path.append("..")
 from handlers.mysqlHandler import defaultQuery
 from handlers.requestPost  import requestXml
+from html import unescape
 
 async def _fetchArticles():
 
@@ -21,7 +22,7 @@ async def _fetchArticles():
                 else:
                     description = ""
 
-                defaultQuery('INSERT INTO cryptoarticles (source, designation, title, content) VALUES (%s, %s, %s, %s)', [article['link'], data[6], article['title'], description])
+                defaultQuery('INSERT INTO cryptoarticles (source, designation, title, content) VALUES (%s, %s, %s, %s)', [article['link'], data[6], article['title'], unescape(description)])
 
     except Exception as e:
         print(f"(fetchArticles.py) Fetching articles has failed, see exception: {e}")

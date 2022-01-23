@@ -1,12 +1,15 @@
-import mysql.connector
+import mysql.connector, json
 from mysql.connector import Error, connect
 
 try:
 
-    connection = mysql.connector.connect(host = 'localhost',
-                                         database = 'marketwatcher',
-                                         user = 'root',
-                                         password = '')
+    with open("./config.json", "r") as jsonfile:
+        config = json.load(jsonfile)
+
+    connection = mysql.connector.connect(host = config["database"]["host"],
+                                         database = config["database"]["database"],
+                                         user = config["database"]["user"],
+                                         password = config["database"]["password"])
 
     if connection.is_connected():
         db_info = connection.get_server_info()
