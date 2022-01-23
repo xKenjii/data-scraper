@@ -4,7 +4,7 @@
 - requests 2.27.1
 - mysql-connector 2.2.9
 
-## config.json configuration
+## config.json example
 ```json
 {
     "database": {
